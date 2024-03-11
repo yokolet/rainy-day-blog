@@ -3,9 +3,13 @@ class User < ApplicationRecord
 
   enum provider: [:twitter, :gitlab, :github]
 
+  # validation
   validates_presence_of :identifier, :provider
   validates_uniqueness_of :identifier, scope: :provider
   validates_uniqueness_of :token
+
+  # Association
+  has_many :posts, dependent: :destroy
 
   private
   def set_default_token

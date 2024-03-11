@@ -6,4 +6,5 @@ RSpec.describe User, type: :model do
   it { should validate_presence_of(:provider) }
   it { should validate_uniqueness_of(:identifier).scoped_to(:provider) }
   it { should validate_uniqueness_of(:token) }
+  it { should have_many(:posts).dependent(:destroy) }
 end
