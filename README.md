@@ -1,24 +1,24 @@
-# README
+# Rainy Day Blog
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+<img src="./docs/pink-cherry-blossom-in-rain.jpeg" height="200">
 
-Things you may want to cover:
+This is a sample Rails app to create a blog whose title is "Rainy Day Blog."
+In a calm rainy day, surrounding by soft sound of pouring rain,
+people write a blog post -- this is an image of this app.
 
-* Ruby version
+### Versions
+- Ruby 3.2.3
+- Rails 7.1.3.2
+- PostgreSQL 15.6
 
-* System dependencies
+### How to Run
+```bash
+$ rails db:create
+$ rails db:migrate
+$ rails s
+```
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+### Run specs
+```bash
+$ bundle exec rspec
+```
