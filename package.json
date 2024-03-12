@@ -1,6 +1,17 @@
 {
+  "scripts": {
+    "dev": "bunx --bun vite",
+    "build": "vue-tsc && bunx --bun vite build",
+    "preview": "bunx --bun vite preview"
+  },
+  "dependencies": {
+    "vue": "^3.4.21"
+  },
   "devDependencies": {
+    "vite-plugin-ruby": "^5.0.0",
+    "@vitejs/plugin-vue": "^5.0.4",
+    "typescript": "^5.4.2",
     "vite": "^5.1.6",
-    "vite-plugin-ruby": "^5.0.0"
+    "vue-tsc": "^2.0.6"
   }
 }
