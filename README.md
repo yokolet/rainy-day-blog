@@ -10,12 +10,14 @@ people write a blog post -- this is an image of this app.
 - Ruby 3.2.3
 - Rails 7.1.3.2
 - PostgreSQL 15.6
+- Bun 1.0.30
 
 ### How to Run
 ```bash
 $ rails db:create
 $ rails db:migrate
-$ rails s
+$ bun install
+$ bin/dev
 ```
 
 ### Run specs
