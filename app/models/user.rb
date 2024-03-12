@@ -10,6 +10,7 @@ class User < ApplicationRecord
 
   # Association
   has_many :posts, dependent: :destroy
+  has_many :comments, dependent: :destroy
 
   private
   def set_default_token
