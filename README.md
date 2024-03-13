@@ -2,9 +2,10 @@
 
 <img src="./docs/pink-cherry-blossom-in-rain.jpeg" height="200">
 
-This is a sample Rails app to create a blog whose title is "Rainy Day Blog."
-In a calm rainy day, surrounding by soft sound of pouring rain,
-people write a blog post -- this is an image of this app.
+Rainy Day Blog is a sample Rails app to showcase how to create a blog.
+
+On a calm rainy day, surrounded by soft sound of pouring rain,
+people might write a blog post feeling fresh air -- this is an image of this app.
 
 ### Versions
 - Ruby 3.2.3

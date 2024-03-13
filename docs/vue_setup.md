@@ -109,12 +109,14 @@ Create tsconfig.json and tsconfig.node.json with the content blow:
 
 ### Set up Starter Command
 
-Replace the content in Procfile.dev with two lines below:
+- Procfile.dev\
+Replace the content in `Procfile.dev` with two lines below:
 ```bash
 web: env RUBY_DEBUG_OPEN=true bin/rails server
 js: bun run dev
 ```
 
+- bin/dev\
 Create a command `bin/dev` with the content below:
 ```bash
 #!/usr/bin/env sh
@@ -137,3 +139,74 @@ Now, a backend and frontend servers start up by the command below:
 ```bash
 $ bin/dev
 ```
+
+### Create a Vue App Mount Point
+
+Create a controller and view for a Vue app mount point.
+```bash
+$ rails g controller home index
+```
+
+Edit `app/views/pages/index.html.erb` as in blow.
+```erbruby
+<%= content_tag(:div, "", id:"app") %>
+```
+
+### Create a Vue App
+
+Since the Vue app is going to use TypeScript, replaces vite_javascript_tag in
+`app/views/layouts/application.html.erb` by vite_typescript_tag.
+```erbruby
+<%= vite_typescript_tag 'application' %>
+```
+
+Rename the entrypoint file to have .ts file extension.
+```bash
+$ mv app/frontend/entrypoints/application.js app/frontend/entrypoints/application.ts
+```
+
+### Install Tailwind CSS
+
+To use Tailwind CSS with Vue, Tailwind packages should be added in a JavaScript manner.
+
+In this app, Tailwind CSS is used only in Vue app.
+Rails 7's CSS bundling feature is not necessary here.
+
+Install and initialize Tailwind as in below:
+
+```bash
+$ bun add --dev tailwindcss postcss autoprefixer
+$ bunx tailwindcss init -p
+```
+
+Once Tailwind is initialized, `tailwind.config.js` and `postcss.config.js` files are created.
+Update `tailwind.config.js` to look at frontend code changes.
+
+```javascript
+// tailwind.config.js
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+    content: [
+        "./index.html",
+        "./app/frontend/**/*.{vue,js,ts,jsx,tsx}",
+    ],
+    theme: {
+        extend: {},
+    },
+    plugins: [],
+}
+```
+
+Create a file, `app/frontend/entrypoints/index.css`, with the content below:
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
+
+Import the index.css in `app/frontend/entrypoints/application.ts`:
+```javascript
+import './index.css'
+```
+
+As for now, Tailwind classes are available to use in Vue components.
