@@ -1,17 +1,14 @@
 <script setup lang="ts">
-import HelloWorld from '../components/HelloWorld.vue'
+import Navigation from '../components/Navigation.vue';
+import TheFooter from '../components/TheFooter.vue';
 </script>
 
 <template>
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="../assets/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="../assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
-  </div>
-  <HelloWorld msg="Vite + Vue" />
+  <navigation></navigation>
+  <main class="grid min-h-full place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8">
+    <router-view></router-view>
+  </main>
+  <the-footer></the-footer>
 </template>
 
 <style scoped>
