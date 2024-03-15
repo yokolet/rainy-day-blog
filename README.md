@@ -5,7 +5,8 @@
 Rainy Day Blog is a sample Rails app to showcase how to create a blog.
 
 On a calm rainy day, surrounded by soft sound of pouring rain,
-people might write a blog post feeling fresh air -- this is an image of this app.
+people might write blog posts feeling fresh air.
+This is why the title is Rainy Day Blog.
 
 ### Versions
 - Ruby 3.2.3
