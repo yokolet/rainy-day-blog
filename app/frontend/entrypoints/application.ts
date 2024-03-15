@@ -29,7 +29,7 @@ console.log('Visit the guide for more information: ', 'https://vite-ruby.netlify
 
 import { createApp } from 'vue'
 import './index.css'
-import './style.css'
+//import './style.css'
 import App from './App.vue'
 import router from '../router';
 console.log(router)

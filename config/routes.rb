@@ -7,4 +7,7 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   root 'home#index'
+
+  # Routes to be handled by Vue Router
+  get '/posts', to: redirect('/')
 end
