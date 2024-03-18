@@ -1,7 +1,15 @@
 <script setup lang="ts">
-import Navigation from '../components/Navigation.vue';
+import {
+  Collapse,
+  Dropdown,
+  initTWE,
+} from "tw-elements";
+
 import TheFooter from '../components/TheFooter.vue';
 import Hero from '../components/Hero.vue';
+import Navigation from '../components/Navigation.vue';
+
+initTWE({ Collapse, Dropdown });
 </script>
 
 <template>

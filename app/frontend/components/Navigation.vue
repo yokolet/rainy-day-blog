@@ -3,25 +3,73 @@
 </script>
 
 <template>
-  <nav>
-    <div class="container mx-auto px-6 py-2 flex justify-between items-center text-rose-900 bg-white">
-<!--      <a class="font-bold text-2xl lg:text-4xl" href="#">-->
-<!--        Rainy Day Blog-->
-<!--      </a>-->
-      <div class="block lg:hidden">
-        <button class="flex items-center px-3 py-2 border rounded text-gray-500 border-gray-600 hover:text-gray-800 hover:border-teal-500 appearance-none focus:outline-none">
-          <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-            <title>Menu</title>
-            <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
-          </svg>
-        </button>
-      </div>
-      <div class="hidden lg:block">
-        <ul class="inline-flex">
-          <li><a class="px-4 font-bold" href="/">Home</a></li>
-          <li><a class="px-4 hover:text-gray-800" href="#">About</a></li>
-          <li><a class="px-4 hover:text-gray-800" href="#">Contact</a></li>
+  <nav
+      class="relative flex w-full flex-wrap items-center justify-between bg-zinc-50 py-2 shadow-dark-mild dark:bg-neutral-700 lg:py-4"
+      data-twe-navbar-ref>
+    <div class="flex w-full flex-wrap items-center justify-between px-3">
+
+      <!-- Hamburger button for mobile view -->
+      <button
+          class="block border-0 bg-transparent px-2 text-black/50 hover:no-underline hover:shadow-none focus:no-underline focus:shadow-none focus:outline-none focus:ring-0 dark:text-neutral-200 lg:hidden"
+          type="button"
+          data-twe-collapse-init
+          data-twe-target="#navbarSupportedContent4"
+          aria-controls="navbarSupportedContent4"
+          aria-expanded="false"
+          aria-label="Toggle navigation">
+        <!-- Hamburger icon -->
+        <span
+            class="[&>svg]:w-7 [&>svg]:stroke-black/50 dark:[&>svg]:stroke-neutral-200">
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor">
+          <path
+              fill-rule="evenodd"
+              d="M3 6.75A.75.75 0 013.75 6h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 6.75zM3 12a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 12zm0 5.25a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75a.75.75 0 01-.75-.75z"
+              clip-rule="evenodd" />
+        </svg>
+      </span>
+      </button>
+
+      <!-- Collapsible navbar container -->
+      <div
+          class="!visible mt-2 hidden flex-grow basis-[100%] items-center lg:mt-0 lg:!flex lg:basis-auto"
+          id="navbarSupportedContent4"
+          data-twe-collapse-item>
+        <!-- Left links -->
+        <ul
+            class="list-style-none me-auto flex flex-col ps-0 lg:mt-1 lg:flex-row"
+            data-twe-navbar-nav-ref>
+          <!-- Home link -->
+          <li
+              class="my-4 ps-2 lg:my-0 lg:pe-1 lg:ps-2"
+              data-twe-nav-item-ref>
+            <a
+                class="text-rose-900 font-bold transition duration-200 hover:text-black/80 hover:ease-in-out focus:text-black/80
+                active:text-black/80 motion-reduce:transition-none dark:text-white/60 dark:hover:text-white/80
+                dark:focus:text-white/80 dark:active:text-white/80 lg:px-2"
+                aria-current="page"
+                href="/"
+                data-twe-nav-link-ref
+            >Home</a
+            >
+          </li>
         </ul>
+
+        <div class="flex items-center">
+          <button
+              type="button"
+              data-twe-ripple-init
+              data-twe-ripple-color="light"
+              class="me-3 inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal
+              text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2
+              focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600
+              active:shadow-primary-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong
+              dark:focus:shadow-dark-strong dark:active:shadow-dark-strong">
+            Log In or Sign Up
+          </button>
+        </div>
       </div>
     </div>
   </nav>
