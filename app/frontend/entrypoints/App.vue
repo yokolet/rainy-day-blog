@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import Navigation from '../components/Navigation.vue';
 import TheFooter from '../components/TheFooter.vue';
 import Hero from '../components/Hero.vue';
+import Navigation from '../components/Navigation.vue';
 </script>
 
 <template>
@@ -23,6 +23,6 @@ html {
 }
 
 body {
-  @apply m-0 text-gray-800 bg-white
+  @apply m-0 text-gray-800 bg-zinc-50
 }
 </style>

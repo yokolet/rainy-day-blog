@@ -1,30 +1,29 @@
 <script setup lang="ts">
+import { useAuthStore } from '../store/auth';
 
+const store = useAuthStore()
+console.log(store.jwt, store.expiry, store.isAuthenticated())
+
+const greeting = `Hi ${ store.getUserInfo().identity} at ${ store.getUserInfo().provider}!`
 </script>
 
 <template>
-  <nav>
-    <div class="container mx-auto px-6 py-2 flex justify-between items-center text-rose-900 bg-white">
-<!--      <a class="font-bold text-2xl lg:text-4xl" href="#">-->
-<!--        Rainy Day Blog-->
-<!--      </a>-->
-      <div class="block lg:hidden">
-        <button class="flex items-center px-3 py-2 border rounded text-gray-500 border-gray-600 hover:text-gray-800 hover:border-teal-500 appearance-none focus:outline-none">
-          <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-            <title>Menu</title>
-            <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
-          </svg>
-        </button>
-      </div>
-      <div class="hidden lg:block">
-        <ul class="inline-flex">
-          <li><a class="px-4 font-bold" href="/">Home</a></li>
-          <li><a class="px-4 hover:text-gray-800" href="#">About</a></li>
-          <li><a class="px-4 hover:text-gray-800" href="#">Contact</a></li>
-        </ul>
+  <div class="navbar bg-zinc-100">
+    <div class="navbar-start">
+      <a class="btn btn-ghost text-xl text-fuchsia-800">Home</a>
+    </div>
+    <div class="navbar-center">
+      <div
+          v-if="store.isAuthenticated()"
+          class="text-base text-fuchsia-900 font-bold sm:text-sm md:text-md lg:text-lg">
+        {{ greeting }}
       </div>
     </div>
-  </nav>
+    <div class="navbar-end">
+      <a v-if="!store.isAuthenticated()" class="btn btn-xs sm:btn-sm btn-primary">LOG IN or SIGN UP</a>
+      <a v-if="store.isAuthenticated()" class="btn btn-xs sm:btn-sm btn-neutral">LOG OUT</a>
+    </div>
+  </div>
 </template>
 
 <style scoped>
