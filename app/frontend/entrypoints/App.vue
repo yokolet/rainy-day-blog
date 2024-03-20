@@ -1,15 +1,7 @@
 <script setup lang="ts">
-import {
-  Collapse,
-  Dropdown,
-  initTWE,
-} from "tw-elements";
-
 import TheFooter from '../components/TheFooter.vue';
 import Hero from '../components/Hero.vue';
 import Navigation from '../components/Navigation.vue';
-
-initTWE({ Collapse, Dropdown });
 </script>
 
 <template>
@@ -31,6 +23,6 @@ html {
 }
 
 body {
-  @apply m-0 text-gray-800 bg-white
+  @apply m-0 text-gray-800 bg-zinc-50
 }
 </style>
