@@ -41,7 +41,7 @@ group :development, :test do
   gem "rspec-rails"
   gem "faker"
   gem "factory_bot_rails"
-  gem "pry"
+  gem "pry-rails"
 end
 
 group :development do
@@ -60,3 +60,5 @@ gem "vite_rails", "~> 3.0"
 
 gem "faraday", "~> 2.9"
 gem "jwt", "~> 2.8"
+
+gem "redis-rails", "~> 5.0"
