@@ -227,3 +227,81 @@ import './index.css'
 ```
 
 As for now, Tailwind classes are available to use in Vue components.
+
+### Install daisyUI
+
+[daisyUI](https://daisyui.com/) is a plugin for Tailwind.
+It provides various components so that people can write tailwind css classes easily.
+
+- Install a package
+```bash
+$ bun add -D daisyui
+```
+
+- Configure tailwind plugin\
+Open `tailwind.config.js` and add daisyui plugin as in below:
+```javascript
+module.exports = {
+  //...
+  plugins: [require("daisyui")],
+  daisyui: {
+    themes: ["fantasy", "winter", "light", "dark",],
+  },
+}
+```
+
+Above change includes a themes definition which is optional.
+
+### Install fontawesome
+
+[Font Awesome](https://fontawesome.com/) is a very popular icon library.
+To use with Vue, Font Awesome should be installed and set up.
+
+- Install a package
+```bash
+$ bun add @fortawesome/fontawesome-svg-core
+$ bun add @fortawesome/vue-fontawesome
+$ bun add @fortawesome/free-brands-svg-icons
+$ bun add @fortawesome/free-regular-svg-icons
+$ bun add @fortawesome/free-solid-svg-icons
+```
+
+- Set up Font Awesome\
+Open `app/frontend/entrypoint/application.ts`
+(The file is equivalent to src/main.js in a typical Vue project)
+and add settings as in blow:
+
+```javascript
+//...
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { fas } from '@fortawesome/free-solid-svg-icons'
+import { far } from '@fortawesome/free-regular-svg-icons'
+import { fab } from '@fortawesome/free-brands-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+//...
+library.add(fas, far, fab)
+
+createApp(App)
+    .component('font-awesome-icon', FontAwesomeIcon)
+//...
+```
+
+- Usage examples
+```html
+<font-awesome-icon icon="fas fa-right-to-bracket" />
+
+<font-awesome-icon icon="fab fa-twitter" />
+```
+
+
+### References
+- Vite Ruby: [https://vite-ruby.netlify.app/](https://vite-ruby.netlify.app/)
+- Vue.js Guide: [https://vuejs.org/guide/introduction.html](https://vuejs.org/guide/introduction.html)
+- Build a frontend using Vite and Bun: [https://bun.sh/guides/ecosystem/vite](https://bun.sh/guides/ecosystem/vite)
+- [Ruby-on-Rails and VueJS tutorial](https://bootrails.com/blog/ruby-on-rails-and-vuejs-tutorial/)
+- [Create Rails-7 app with Vite](https://dev.to/chmich/setup-vite-on-rails-7-f1i)
+- [Integrating Bun with Vite Ruby for Lightning-Fast Frontend Builds](https://dev.to/jetthoughts/integrating-bun-with-vite-ruby-for-lightning-fast-frontend-builds-1fh2)
+- [Building a Rails App with a Vue.js Frontend](https://clouddevs.com/ruby-on-rails/building-app-with-vuejs-frontend/)
+- [Vue on Rails](https://medium.com/@oscarreciogonzalez/vue-on-rails-15686b85b1d3)
+- [daisyUI Docs](https://daisyui.com/components/)
+- [Font Awesome: Set Up with Vue](https://docs.fontawesome.com/web/use-with/vue)
