@@ -34,7 +34,7 @@ class OauthController < ApplicationController
                                                     client_id: client_id,
                                                     code_verifier: code_verifier
                                                   })
-    puts("oauth_token_params: #{oauth_token_params}")
+    logger.debug("oauth_token_params: #{oauth_token_params}")
     conn = Faraday.new(
       url: url,
       headers: {
@@ -43,8 +43,8 @@ class OauthController < ApplicationController
       }
     )
     response = conn.post(path, URI.encode_www_form(oauth_token_params))
-    puts("response.status: #{response.status.inspect}")
-    puts("response.body: #{response.body.inspect}")
+    logger.debug("response.status: #{response.status.inspect}")
+    logger.debug("response.body: #{response.body.inspect}")
     body_obj = JSON.parse(response.body)
     [body_obj['access_token'], body_obj['expires_in']]
   end
@@ -58,14 +58,14 @@ class OauthController < ApplicationController
       }
     )
     response = conn.get(path)
-    puts("response.status: #{response.status.inspect}")
-    puts("response.body: #{response.body.inspect}")
+    logger.debug("response.status: #{response.status.inspect}")
+    logger.debug("response.body: #{response.body.inspect}")
     body_obj = JSON.parse(response.body)
     body_obj['data']
   end
 
   def getUserFromDb(user)
-    puts("user: #{user}")
+    logger.debug("user: #{user}")
     User.find_or_create_by(user)
   end
 
