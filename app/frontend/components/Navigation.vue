@@ -1,10 +1,17 @@
 <script setup lang="ts">
-import { useAuthStore } from '../store/auth';
+import { useAuthStore } from '../stores/auth';
 
 const store = useAuthStore()
 console.log(store.jwt, store.expiry, store.isAuthenticated())
 
 const greeting = `Hi ${ store.getUserInfo().identity} at ${ store.getUserInfo().provider}!`
+
+const handleTwitter = async () => {
+  const authEndpoint = 'https://twitter.com/i/oauth2/authorize'
+  const pkceParams = await store.getPKCEParams('twitter')
+  let args = new URLSearchParams(pkceParams).toString()
+  window.open(`${authEndpoint}?${args}`, '_self')
+}
 </script>
 
 <template>
@@ -36,18 +43,24 @@ const greeting = `Hi ${ store.getUserInfo().identity} at ${ store.getUserInfo().
         </form>
         <h3 class="font-bold text-lg">Continue With:</h3>
         <div class="flex flex-col justify-center">
-          <div class="btn text-gray-800 text-center sm:text-sm md:text-md lg:text-lg bg-gray-300 px-4 py-2 mx-5 my-2">
+          <button
+              class="btn text-gray-800 text-center sm:text-sm md:text-md lg:text-lg bg-gray-300 px-4 py-2 mx-5 my-2"
+              @click="handleTwitter">
             <font-awesome-icon icon="fab fa-twitter" />
             Twitter
-          </div>
-          <div class="btn text-gray-800 text-center  sm:text-sm md:text-md lg:text-lg bg-gray-300 px-4 py-2 mx-5 my-2" disabled="disabled">
+          </button>
+          <button
+              class="btn text-gray-800 text-center  sm:text-sm md:text-md lg:text-lg bg-gray-300 px-4 py-2 mx-5 my-2"
+              disabled>
             <font-awesome-icon icon="fab fa-gitlab" />
             GitLab
-          </div>
-          <div class="btn text-gray-800 text-center  sm:text-sm md:text-md lg:text-lg bg-gray-300 px-4 py-2 mx-5 my-2" disabled="disabled">
+          </button>
+          <button
+              class="btn text-gray-800 text-center  sm:text-sm md:text-md lg:text-lg bg-gray-300 px-4 py-2 mx-5 my-2"
+              disabled>
             <font-awesome-icon icon="fab fa-github" />
             GitHub
-          </div>
+          </button>
         </div>
 
       </div>
