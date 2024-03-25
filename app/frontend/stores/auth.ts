@@ -47,5 +47,13 @@ export const useAuthStore = defineStore('auth', () => {
     return responseData
   }
 
-  return { jwt, expiry, identity, provider, isAuthenticated, getUserInfo, getPKCEParams }
-})
+  return {
+    jwt,
+    expiry,
+    identity,
+    provider,
+    isAuthenticated,
+    getUserInfo,
+    getPKCEParams,
+  }
+});

@@ -10,16 +10,17 @@ class OauthController < ApplicationController
                                              Rails.application.credentials.twitter.client_secret,
                                              code_verifier,
                                              oauthTokenParams)
-    data = getUser("https://api.twitter.com", "/2/users/me", access_token)
-    user = getUserFromDb(
-      {
-        identifier: data['username'],
-        provider: User.providers[:twitter],
-        name: data['name'],
-      }
-    )
-    signedToken = getSignedToken(access_token, user)
-    redirect_to(root_path(access_token: signedToken, expires_in: expires_in))
+    redirect_to(root_path(access_token: access_token, expires_in: expires_in))
+    # data = getUser("https://api.twitter.com", "/2/users/me", access_token)
+    # user = getUserFromDb(
+    #   {
+    #     identifier: data['username'],
+    #     provider: User.providers[:twitter],
+    #     name: data['name'],
+    #   }
+    # )
+    # signedToken = getSignedToken(access_token, user)
+    # redirect_to(root_path(access_token: signedToken, expires_in: expires_in))
   end
 
   private
