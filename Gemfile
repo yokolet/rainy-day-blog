@@ -65,3 +65,6 @@ gem "faraday", "~> 2.9"
 gem "jwt", "~> 2.8"
 
 gem "redis-rails", "~> 5.0"
+
+gem "graphql", "~> 2.3"
+gem "graphiql-rails", group: :development

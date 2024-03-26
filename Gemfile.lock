@@ -115,6 +115,10 @@ GEM
       net-http
     globalid (1.2.1)
       activesupport (>= 6.1)
+    graphiql-rails (1.10.0)
+      railties
+    graphql (2.3.0)
+      base64
     hashdiff (1.1.0)
     i18n (1.14.4)
       concurrent-ruby (~> 1.0)
@@ -313,6 +317,8 @@ DEPENDENCIES
   factory_bot_rails
   faker
   faraday (~> 2.9)
+  graphiql-rails
+  graphql (~> 2.3)
   jbuilder
   jwt (~> 2.8)
   pg (~> 1.1)
