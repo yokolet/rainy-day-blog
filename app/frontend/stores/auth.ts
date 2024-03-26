@@ -1,9 +1,11 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
+import { useCookies } from '@vueuse/integrations/useCookies'
 
 export interface UserInfo {
-  identity: string
+  identifier: string
   provider: string
+  jwt: string
 }
 
 export interface PKCEParams {
@@ -16,20 +18,23 @@ export interface PKCEParams {
   state: string
 }
 
+const cookies = useCookies()
+
 export const useAuthStore = defineStore('auth', () => {
   const jwt = ref<string|null>(null)
   const expiry = ref<Date|null>(null)
-  const identity = ref<string|null>('someone')
-  const provider = ref<string|null>('twitter')
+  const identifier = ref<string|null>(null)
+  const provider = ref<string|null>(null)
 
   const isAuthenticated = (): boolean => {
-    let now: number = new Date().getTime()
-    return jwt.value !== null && expiry.value !== null && (now < expiry.value.getTime())
+    return identifier.value !== null && provider.value !== null && jwt.value !== null
+    //let now: number = new Date().getTime()
+    //return jwt.value !== null && expiry.value !== null && (now < expiry.value.getTime())
     //return true
   }
 
   const getUserInfo = (): UserInfo => {
-    return { identity: identity.value, provider: provider.value }
+    return { identifier: identifier.value, provider: provider.value, jwt: jwt.value }
   }
 
   const getPKCEParams = async (provider: string) => {
@@ -47,13 +52,31 @@ export const useAuthStore = defineStore('auth', () => {
     return responseData
   }
 
+  const updateUserInfo = () => {
+    const userInfo = cookies.get('user_info')
+    if (userInfo === null || userInfo === undefined) return;
+    console.log(cookies.get('user_info'))
+    identifier.value = userInfo['identifier']
+    provider.value = userInfo['provider']
+    jwt.value = userInfo['jwt']
+  }
+
+  const logout = () => {
+    cookies.remove('user_info')
+    identifier.value = null
+    provider.value = null
+    jwt.value = null
+  }
+
   return {
     jwt,
     expiry,
-    identity,
+    identifier,
     provider,
     isAuthenticated,
     getUserInfo,
     getPKCEParams,
+    updateUserInfo,
+    logout,
   }
 });

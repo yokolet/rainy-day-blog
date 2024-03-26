@@ -10,17 +10,23 @@ class OauthController < ApplicationController
                                              Rails.application.credentials.twitter.client_secret,
                                              code_verifier,
                                              oauthTokenParams)
-    redirect_to(root_path(access_token: access_token, expires_in: expires_in))
-    # data = getUser("https://api.twitter.com", "/2/users/me", access_token)
-    # user = getUserFromDb(
-    #   {
-    #     identifier: data['username'],
-    #     provider: User.providers[:twitter],
-    #     name: data['name'],
-    #   }
-    # )
-    # signedToken = getSignedToken(access_token, user)
-    # redirect_to(root_path(access_token: signedToken, expires_in: expires_in))
+    data = getUser("https://api.twitter.com", "/2/users/me", access_token)
+    user = createOrUpdateUser(
+      {
+        identifier: data['username'],
+        provider: User.providers[:twitter],
+        token: access_token,
+        token_expiry: DateTime.now.advance(seconds: expires_in.to_i)
+      }
+    )
+    logger.debug("created or updated user: #{user}")
+    signedToken = getSignedToken(data['username'], User.providers[:twitter])
+    cookies[:user_info] = {
+      value: { identifier: data['username'],
+               provider: 'twitter',
+               jwt: signedToken}.to_json,
+      httponly: false }
+    redirect_to(root_path)
   end
 
   private
@@ -65,17 +71,18 @@ class OauthController < ApplicationController
     body_obj['data']
   end
 
-  def getUserFromDb(user)
-    logger.debug("user: #{user}")
-    User.find_or_create_by(user)
+  def createOrUpdateUser(user)
+    User.upsert(user,
+                unique_by: [:identifier, :provider],
+                on_duplicate: :update,
+                update_only: [:token, :token_expiry])
   end
 
-  def getSignedToken(access_token, user)
+  def getSignedToken(identifier, provider)
     JWT.encode(
       {
-        username: user.identifier,
-        provider: user.provider,
-        accessToken: access_token
+        identifier: identifier,
+        provider: provider,
       },
       Rails.application.credentials.jwt_secret,
       'HS256'

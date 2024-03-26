@@ -1,16 +1,23 @@
 <script setup lang="ts">
 import { useAuthStore } from '../stores/auth';
+import { computed } from 'vue';
 
 const store = useAuthStore()
-console.log(store.jwt, store.expiry, store.isAuthenticated())
+store.updateUserInfo();
+console.log(store.jwt, store.identifier, store.isAuthenticated())
 
-const greeting = `Hi ${ store.getUserInfo().identity} at ${ store.getUserInfo().provider}!`
+const greeting = computed(() =>
+    `Hi ${ store.getUserInfo().identifier} @ ${ store.getUserInfo().provider}!`)
 
 const handleTwitter = async () => {
   const authEndpoint = 'https://twitter.com/i/oauth2/authorize'
   const pkceParams = await store.getPKCEParams('twitter')
   let args = new URLSearchParams(pkceParams).toString()
   window.open(`${authEndpoint}?${args}`, '_self')
+}
+
+const handleLogout = () => {
+  store.logout()
 }
 </script>
 
@@ -31,7 +38,7 @@ const handleTwitter = async () => {
         <font-awesome-icon icon="fas fa-right-to-bracket" />
         LOG IN
       </a>
-      <a v-if="store.isAuthenticated()" class="btn btn-xs sm:btn-sm btn-neutral">
+      <a v-if="store.isAuthenticated()" class="btn btn-xs sm:btn-sm btn-neutral" @click="handleLogout">
         LOG OUT
         <font-awesome-icon icon="fas fa-right-from-bracket" />
       </a>
