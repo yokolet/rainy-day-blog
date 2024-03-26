@@ -51,4 +51,18 @@ Rails.application.configure do
 
   # Raise error when a before_action's only/except options reference missing actions
   config.action_controller.raise_on_missing_callback_actions = true
+
+  # Redis session setup
+  config.session_store :redis_store,
+                       servers: ["redis://localhost:6379/2/session"],
+                       expire_after: 90.minutes,
+                       key: "_#{Rails.application.class.name.split("::").first.downcase}_test_session"
+
+  # Redis db config
+  config.redis_db = {
+    :host=>"localhost",
+    :port=>6379,
+    :db=>2,
+    :id=>"#{Rails.application.class.name.split("::").first.downcase}_test"
+  }
 end

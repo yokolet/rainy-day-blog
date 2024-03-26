@@ -29,17 +29,22 @@ console.log('Visit the guide for more information: ', 'https://vite-ruby.netlify
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia';
-import VueCookies from 'vue-cookies'
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { fas } from '@fortawesome/free-solid-svg-icons'
+import { far } from '@fortawesome/free-regular-svg-icons'
+import { fab } from '@fortawesome/free-brands-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+
 import './index.css'
 //import './style.css'
 import App from './App.vue'
 import router from '../router';
 console.log(router)
 
-const pinia = createPinia()
-const app = createApp(App)
+library.add(fas, far, fab)
 
-app.use(VueCookies)
-app.use(router)
-app.use(pinia)
-app.mount('#app')
+createApp(App)
+  .component('font-awesome-icon', FontAwesomeIcon)
+  .use(createPinia())
+  .use(router)
+  .mount('#app')

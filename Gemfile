@@ -29,6 +29,9 @@ gem "tzinfo-data", platforms: %i[ windows jruby ]
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
 
+# Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin Ajax possible
+gem "rack-cors"
+
 group :test do
   gem "shoulda-matchers"
   gem "database_cleaner-active_record"
@@ -41,7 +44,7 @@ group :development, :test do
   gem "rspec-rails"
   gem "faker"
   gem "factory_bot_rails"
-  gem "pry"
+  gem "pry-rails"
 end
 
 group :development do
@@ -57,3 +60,8 @@ end
 
 
 gem "vite_rails", "~> 3.0"
+
+gem "faraday", "~> 2.9"
+gem "jwt", "~> 2.8"
+
+gem "redis-rails", "~> 5.0"
