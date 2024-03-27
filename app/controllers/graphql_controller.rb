@@ -13,7 +13,7 @@ class GraphqlController < ApplicationController
     operation_name = params[:operationName]
     context = {
       # Query context goes here, for example:
-      # current_user: current_user,
+      current_user: current_user,
     }
     result = RainyDayBlogSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
     render json: result
@@ -23,6 +23,34 @@ class GraphqlController < ApplicationController
   end
 
   private
+
+  def current_user
+    encoded_token = getBearerToken()
+    if encoded_token
+      payload = decodeSignedJwtToken(encoded_token).first
+      user = User.where(provider: payload["provider"], identifier: payload["identifier"]).first
+      return validateAccessToken(user) ? user : nil
+    end
+    nil
+  end
+
+  def getBearerToken
+    pattern = /^Bearer /
+    request.authorization ? request.authorization.gsub(pattern, '') : nil
+  end
+
+  def decodeSignedJwtToken(token)
+    JWT.decode(
+      token,
+      Rails.application.credentials.jwt_secret,
+      true,
+      { algorithm: 'HS256' }
+    )
+  end
+
+  def validateAccessToken(user)
+    user&.token && DateTime.now.utc.to_f < user.token_expiry.to_f
+  end
 
   # Handle variables in form data, JSON body, or a blank value
   def prepare_variables(variables_param)
