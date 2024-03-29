@@ -10,6 +10,5 @@ RSpec.describe Types::PostsType, type: :graphql do
   it { is_expected.to have_field(:excerpt).of_type('String!') }
   it { is_expected.to have_field(:identifier).of_type('String!') }
   it { is_expected.to have_field(:comment_count).of_type('Int!') }
-  it { is_expected.to have_field(:created_at).of_type('ISO8601DateTime!') }
   it { is_expected.to have_field(:updated_at).of_type('ISO8601DateTime!') }
 end

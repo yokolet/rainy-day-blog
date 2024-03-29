@@ -29,6 +29,6 @@ module Types
     end
 
     field :user, resolver: Resolvers::UserResolver
-
+    field :posts, resolver: Resolvers::PostsResolver
   end
 end
