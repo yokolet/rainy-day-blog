@@ -12,7 +12,7 @@ module Resolvers
              description: 'User id'
 
     def resolve(id:)
-      User.where(id: id).select(:id, :identifier, :provider, :name).first
+      User.where(id: id).select(:id, :identifier, :provider, :name, :created_at, :updated_at).first
     end
   end
 end

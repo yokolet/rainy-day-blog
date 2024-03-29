@@ -10,6 +10,5 @@ RSpec.describe Types::PostType, type: :graphql do
   it { is_expected.to have_field(:content).of_type('String!') }
   it { is_expected.to have_field(:user).of_type('User!') }
   it { is_expected.to have_field(:comments).of_type('[Comment!]') }
-  it { is_expected.to have_field(:created_at).of_type('ISO8601DateTime!') }
   it { is_expected.to have_field(:updated_at).of_type('ISO8601DateTime!') }
 end
