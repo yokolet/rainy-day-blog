@@ -34,12 +34,18 @@ where posts.id = ?;
         }
       end.first
 
+      if post.blank?
+        raise RuntimeError.new(GraphqlErrorType::ARGUMENT_ERROR)
+      end
+
       sql = <<-SQL
 select comments.* from comments left join posts on comments.post_id = posts.id where posts.id = ?;
       SQL
       comments = execute_sql(sql, [id])
       post[:comments] = comments
       post
+    rescue => e
+      raise GraphQL::ExecutionError.new(e.message, extensions: {code: GraphqlErrorType::INTERNAL_SERVER_ERROR })
     end
 
     private

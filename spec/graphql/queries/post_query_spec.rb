@@ -3,6 +3,15 @@
 require 'rails_helper'
 
 RSpec.describe "post", type: :graphql do
+  context "query with no post" do
+    it "should return error without any post" do
+      result = RainyDayBlogSchema.execute(query, variables: { id: 100 })
+      expect(result.dig("data")).to be_nil
+      expect(result.dig("errors")).not_to be_empty
+      expect(result.dig("errors").first["message"]).to eq("ARGUMENT_ERROR")
+    end
+  end
+
   context "query with post" do
     let!(:user) { create(:user) }
     let!(:post) { create(:post, user_id: user.id) }
