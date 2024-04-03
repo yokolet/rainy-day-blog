@@ -26,7 +26,7 @@ RSpec.describe "post", type: :graphql do
       expect(result.dig("data", "post", "user", "identifier")).to eql(user.identifier)
       expect(result.dig("data", "post", "comments").length).to eq(comments.length)
       expect(result.dig("data", "post", "comments").first["body"]).not_to be_nil
-      expect(result.dig("data", "post", "comments").first["user_id"]).not_to be_nil
+      expect(result.dig("data", "post", "comments").first["userId"]).not_to be_nil
     end
   end
 
