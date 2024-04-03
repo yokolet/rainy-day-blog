@@ -42,7 +42,12 @@ where posts.id = ?;
       end
 
       sql = <<-SQL
-select comments.* from comments left join posts on comments.post_id = posts.id where posts.id = ?;
+select
+    comments.id, comments.body, comments.post_id, comments.reply_id,
+    comments.user_id, users.identifier,
+    comments.updated_at
+from comments left join users on comments.user_id = users.id
+where post_id = ?;
       SQL
       comments = execute_sql(sql, [id])
       post[:comments] = comments
