@@ -107,6 +107,47 @@ If the query returns the result below, all are set up correctly.
 <img src="./example-graphql-query.jpeg" height="200">
 
 
+### Create GraphQL Types
+
+The graphql gem adds generators.
+Use `graphql:object` generator to define types.
+The generator sees model definitions to create types.
+
+```bash
+$ rails g graphql:object user
+$ rails g graphql:object post
+$ rails g graphql:object comment
+```
+
+### Create Resolvers
+- Create a resolver
+- Add the resolver to query_type.rb
+- Test on GraphQL client (Postman)
+
+### Test GraphQL by Rspec
+
+#### rspec-graphql-matchers
+```ruby
+# Gemfile
+
+group :development, :test do
+  #...
+  gem 'rspec-graphql_matchers'
+end
+```
+
+### Create Mutations
+- Create a mutation
+- Add the mutation to mutation_type.rb
+
+[note] To test on Postman, set Bearer token in the request header.
+
+#### Types of GraphQL specs
+- Schema Spec
+- Type Spec
+- Query Spec
+- Mutation Spec
+
 ### References
 - [GraphQL Ruby](https://graphql-ruby.org/)
 - [ActionController::RequestForgeryProtection::ClassMethods](https://api.rubyonrails.org/classes/ActionController/RequestForgeryProtection/ClassMethods.html)
