@@ -44,7 +44,8 @@ group :development, :test do
   gem "rspec-rails"
   gem "faker"
   gem "factory_bot_rails"
-  gem "pry-rails"
+  gem "pry"
+  gem 'rspec-graphql_matchers'
 end
 
 group :development do
@@ -65,3 +66,6 @@ gem "faraday", "~> 2.9"
 gem "jwt", "~> 2.8"
 
 gem "redis-rails", "~> 5.0"
+
+gem "graphql", "~> 2.3"
+gem "graphiql-rails", group: :development
