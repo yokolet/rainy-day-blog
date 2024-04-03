@@ -1,24 +1,30 @@
 # frozen_string_literal: true
 
-module Resolvers
-  class PostResolver < BaseResolver
-    type Types::PostType, null: false
+module Mutations
+  class PostCreate < BaseMutation
+    description "Creates a new post"
 
-    description 'Get a single post'
+    field :post, Types::PostType, null: false
 
-    argument :id,
-             type: ::GraphQL::Types::ID,
-             required: true,
-             description: 'Post id'
+    argument :title, String, required: true
+    argument :content, String, required: true
 
-    def resolve(id:)
+    def resolve(**post_input)
+      authenticate!
+      post_input[:user_id] = context[:current_user]&.id
+      post = ::Post.new(**post_input)
+      raise GraphQL::ExecutionError.new(
+        GraphqlErrorType::POST_CREATE_ERROR,
+        extensions: {code: GraphqlErrorType::POST_CREATE_ERROR}
+      ) unless post.save
+
       sql = <<-SQL
 select posts.id, posts.title, posts.content, posts.updated_at,
        users.id as user_id, users.identifier, users.provider, users.created_at, users.updated_at as user_updated_at
 from posts left join users on posts.user_id = users.id
 where posts.id = ?;
       SQL
-      post = execute_sql(sql, [id]).map do |e|
+      post_type = execute_sql(sql, [post.id]).map do |e|
         {
           id: e["id"],
           title: e["title"],
@@ -33,33 +39,13 @@ where posts.id = ?;
           }
         }
       end.first
-
-      if post.blank?
-        raise GraphQL::ExecutionError.new(
-          GraphqlErrorType::ARGUMENT_ERROR,
-          extensions: { code: GraphqlErrorType::ARGUMENT_ERROR }
-        )
-      end
-
-      sql = <<-SQL
-select comments.* from comments left join posts on comments.post_id = posts.id where posts.id = ?;
-      SQL
-      comments = execute_sql(sql, [id])
-      post[:comments] = comments
-      post
+      { post: post_type }
     rescue => e
       raise GraphQL::ExecutionError.new(
         e.message,
         extensions: {
           code: (e.respond_to?(:extensions) && e.extensions[:code]) || GraphqlErrorType::INTERNAL_SERVER_ERROR
         })
-    end
-
-    private
-
-    def execute_sql(sql, params)
-      cleaned_sql = Post.sanitize_sql_array([sql, *params])
-      ActiveRecord::Base.connection.execute(cleaned_sql).map {|e| e}
     end
   end
 end
