@@ -27,7 +27,7 @@ console.log('Visit the guide for more information: ', 'https://vite-ruby.netlify
 // Example: Import a stylesheet in app/frontend/index.css
 // import '~/index.css'
 
-import { createApp } from 'vue'
+import { createApp, h } from 'vue'
 import { createPinia } from 'pinia';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
@@ -38,12 +38,19 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import './index.css'
 //import './style.css'
 import App from './App.vue'
-import router from '../router';
-console.log(router)
+import router from '../router'
+import { setupGraphQL } from '../utils/setupGraphQL'
 
 library.add(fas, far, fab)
 
-createApp(App)
+const app = createApp({
+  setup() {
+    setupGraphQL()
+  },
+  render: () => h(App),
+})
+
+app
   .component('font-awesome-icon', FontAwesomeIcon)
   .use(createPinia())
   .use(router)
