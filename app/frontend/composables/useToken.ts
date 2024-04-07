@@ -9,7 +9,7 @@ interface UseToken {
 }
 
 export const useToken = (): UseToken => {
-  const token: Ref<string> = useSessionStorage<string>(JWT_STORAGE_KEY, '');
+  const token: Ref<string | null> = useSessionStorage<string>(JWT_STORAGE_KEY, null);
   const getJWT = () => {
     return token.value;
   };
