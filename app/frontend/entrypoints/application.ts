@@ -39,7 +39,7 @@ import './index.css'
 //import './style.css'
 import App from './App.vue'
 import router from '../router'
-import { setupGraphQL } from '../utils/setupGraphQL'
+import { setupGraphQL } from '../graphql/setupGraphQL'
 
 library.add(fas, far, fab)
 
