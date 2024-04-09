@@ -7,7 +7,7 @@ import Navigation from '../components/Navigation.vue';
 <template>
   <navigation></navigation>
   <hero></hero>
-  <main class="grid min-h-full place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8">
+  <main class="grid h-full bg-white px-6 py-6 sm:py-4 lg:px-8">
     <router-view></router-view>
   </main>
   <the-footer></the-footer>
