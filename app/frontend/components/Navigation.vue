@@ -24,7 +24,7 @@ const handleLogout = () => {
 <template>
   <div class="navbar bg-zinc-100">
     <div class="navbar-start">
-      <a class="btn btn-ghost text-xl text-fuchsia-800">Home</a>
+      <router-link to="/" class="btn btn-ghost text-xl text-fuchsia-800">Home</router-link>
     </div>
     <div class="navbar-center">
       <div

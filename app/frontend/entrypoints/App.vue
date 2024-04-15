@@ -5,12 +5,14 @@ import Navigation from '../components/Navigation.vue';
 </script>
 
 <template>
-  <navigation></navigation>
-  <hero></hero>
-  <main class="grid h-full bg-white px-6 py-6 sm:py-4 lg:px-8">
-    <router-view></router-view>
-  </main>
-  <the-footer></the-footer>
+  <div class="min-h-screen">
+    <navigation></navigation>
+    <hero></hero>
+    <main class="grid flex-grow bg-white px-6 py-6 sm:py-4 lg:px-8">
+      <router-view></router-view>
+    </main>
+    <the-footer></the-footer>
+  </div>
 </template>
 
 <style>
