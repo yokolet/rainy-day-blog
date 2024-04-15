@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router';
 import { usePost } from '../composables/usePost';
+import { useDFS } from '../composables/useDFS';
+import { computed } from 'vue';
 
 const route = useRoute();
 const { result, loading, error } = usePost(route.params.id as string);
@@ -17,6 +19,10 @@ const providerIcon = (provider: string) => {
       return ['fas', 'question'];
   }
 }
+
+const elements = computed(() => useDFS(result.value.post.comments));
+const comment = (id: string) => result.value.post.comments.filter((c) => c["id"] === id)[0];
+const indent = (level: number) => level === 0 ? "mt-1 ml-0" : `mt-0 ml-${level * 10}`;
 </script>
 
 <template>
@@ -36,77 +42,33 @@ const providerIcon = (provider: string) => {
       <div class="w-fullbg-white p-1 md:p-3 m-2">
         <h3 class="font-semibold p-1">Comments</h3>
         <div class="flex flex-col gap-5 m-3">
-          <!-- Comment Container -->
-          <div>
-            <div class="flex justify-between border rounded-md">
+          <div v-for="element in elements" :key="element['id']" :set="cur=comment(element['id'])">
+            <div
+                class="flex justify-between border rounded-md md:w-3/4 sm:w-full mb-0"
+                :class="indent(element['level'])">
               <div class="p-3">
                 <div class="flex gap-3 items-center">
                   <div class="text-sm font-bold text-gray-500">
-                    User 1
+                    {{ cur["identifier"] }}
                   </div>
                 </div>
                 <p class="text-gray-800 mt-2">
-                  this is sample comment
+                  {{ cur["body"] }}
                 </p>
                 <button class="text-sm text-right text-blue-500">Reply</button>
               </div>
-            </div>
-            <!-- Reply Container  -->
-            <div class="text-gray-300 font-bold pl-16">|</div>
-            <div class="flex justify-between border rounded-md ml-5">
-              <div class="p-3">
-                <div class="flex gap-3 items-center">
-                  <h3 class="text-sm font-bold text-gray-500">
-                    User 2
-                  </h3>
-                </div>
-                <p class="text-gray-800 mt-2">
-                  this is sample comment
-                </p>
-                <button class="text-sm text-right text-blue-500">Reply</button>
-              </div>
-            </div>
-            <!-- END Reply Container  -->
-            <!-- Reply Container  -->
-            <div class="text-gray-300 font-bold pl-20">|</div>
-            <div class="flex justify-between border rounded-md ml-10">
-              <div class="p-3">
-                <div class="flex gap-3 items-center">
-                  <h3 class="text-sm font-bold text-gray-500">
-                    User 3
-                  </h3>
-                </div>
-                <p class="text-gray-800 mt-2">
-                  this is sample comment
-                </p>
-                <button class="text-sm text-right text-blue-500">Reply</button>
-              </div>
-            </div>
-            <!-- END Reply Container  -->
-          </div>
-          <!-- END Comment Container  -->
-          <!-- Reply Container  -->
-          <div class="flex w-full justify-between border rounded-md">
-            <div class="p-3">
-              <div class="flex gap-3 items-center">
-                <h3 class="text-sm font-bold text-gray-500">
-                  User 4
-                </h3>
-              </div>
-              <p class="text-gray-800 mt-2">
-                this is sample commnent
-              </p>
-              <button class="text-sm text-right text-blue-500">Reply</button>
             </div>
           </div>
-          <!-- END Reply Container  -->
         </div>
         <div class="card-actions">
           <div class="w-full px-3 mt-2">
             <textarea
                 class="bg-gray-100 rounded border border-gray-400 leading-normal resize-none w-full h-20 py-2 px-3
               text-sm font-medium placeholder-gray-400 focus:outline-none focus:bg-white"
-                name="body" placeholder="Comment" required></textarea>
+                name="body"
+                placeholder="Comment (max 300 characters)"
+                maxlength="300"
+                required></textarea>
           </div>
           <div class="w-full flex justify-end px-3">
             <button class="btn btn-xs sm:btn-sm btn-outline btn-secondary">Post Comment</button>
