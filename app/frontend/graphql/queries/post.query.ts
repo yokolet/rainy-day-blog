@@ -1,17 +1,4 @@
-import gql from 'graphql-tag'
-
-export const POSTS_QUERY = gql`
-  query Posts {
-    posts {
-        id
-        identifier
-        title
-        excerpt
-        commentCount
-        updatedAt
-    }
-  }
-`;
+import gql from 'graphql-tag';
 
 export const POST_QUERY = gql`
   query Posts ($id: ID!){
