@@ -2,6 +2,9 @@
 import { usePosts } from '../composables/usePosts';
 import { ref } from 'vue';
 import { PostInputType } from '../types/formInputTypes';
+import { useEscapeHtml } from '../composables/useEscapeHtml';
+import { usePostCreate } from '../composables/usePostCreate';
+
 const { result, loading, error } = usePosts();
 
 const postInput = ref<PostInputType>({
@@ -15,7 +18,7 @@ const postInput = ref<PostInputType>({
   }
 });
 
-const hasAlert = ref<boolean>(false);
+const postCreateError = ref<string|null>(null);
 
 const validateInput = (key: string): boolean => {
   postInput.value[key].isValid = postInput.value[key].text.length > 0;
@@ -25,23 +28,26 @@ const validateInput = (key: string): boolean => {
 const clearPostInput = () => {
   postInput.value['title'] = { text: "", isValid: true };
   postInput.value['content'] = { text: "", isValid: true };
-  hasAlert.value = false;
 }
 
 const createNewPost = () => {
   let isValidTitle = validateInput('title');
   let isValidContent = validateInput('content');
   if (isValidTitle && isValidContent) {
-    hasAlert.value = false;
-    console.log(`title: ${postInput.value['title'].text}, content: ${postInput.value['content'].text}`);
-    // useMutation
-  } else {
-    hasAlert.value = true;
+    const { postCreate, onError } = usePostCreate();
+    postCreate({
+      title: useEscapeHtml(postInput.value['title'].text),
+      content: useEscapeHtml(postInput.value['content'].text)
+    });
+    onError(error => {
+      postCreateError.value = error.message;
+      console.log(`post create error: ${postCreateError.value}`);
+    });
   }
 }
 
-const submitPostInput = (event: SubmitEvent) => {
-  switch (event.submitter.id) {
+const submitPostInput = (event: Event) => {
+  switch ((event as SubmitEvent).submitter.id) {
     case 'clear':
       clearPostInput();
       break;
@@ -116,7 +122,7 @@ const submitPostInput = (event: SubmitEvent) => {
                 minlength="1"
                 maxlength="50"
                 v-model.trim="postInput['title'].text" />
-            <div v-if="hasAlert && !postInput['title'].isValid" class="label-text text-red-900">
+            <div v-if="!postInput['title'].isValid" class="label-text text-red-900">
               Title must not be-empty.
             </div>
           </label>
@@ -132,7 +138,7 @@ const submitPostInput = (event: SubmitEvent) => {
                 maxlength="1000"
                 v-model.trim="postInput['content'].text"
             ></textarea>
-            <div v-if="hasAlert && !postInput['content'].isValid" class="label-text text-red-900">
+            <div v-if="!postInput['content'].isValid" class="label-text text-red-900">
               Content must not be-empty.
             </div>
           </label>
