@@ -10,7 +10,22 @@ This is why the title is Rainy Day Blog.
 
 ### Key Technologies
 - Ruby on Rails
-- VueJS
+  - PostgreSQL
+  - Redis
+  - RSpec
+  - GraphQL Ruby
+  - Vite Ruby
+- Vue 3
+  - Vite
+  - Bun
+  - Composition API
+  - Vue Router
+  - Pinia
+  - VueUse
+  - Vue Apollo
+  - Font Awesome
+  - Tailwind CSS
+  - Daisy UI
 - OAuth2 PKCE (Authorization Code Flow with Proof Key for Code Exchange)
 - GraphQL
 
