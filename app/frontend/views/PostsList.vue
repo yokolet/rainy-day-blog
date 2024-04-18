@@ -1,7 +1,59 @@
 <script setup lang="ts">
-import { PostsItem, usePosts } from '../composables/usePosts';
-import { ComputedRef } from 'vue';
+import { usePosts } from '../composables/usePosts';
+import { ref } from 'vue';
+import { PostInputType } from '../types/formInputTypes';
 const { result, loading, error } = usePosts();
+
+const postInput = ref<PostInputType>({
+  title: {
+    text: "",
+    isValid: true,
+  },
+  content: {
+    text: "",
+    isValid: true,
+  }
+});
+
+const hasAlert = ref<boolean>(false);
+
+const validateInput = (key: string): boolean => {
+  postInput.value[key].isValid = postInput.value[key].text.length > 0;
+  return postInput.value[key].isValid;
+}
+
+const clearPostInput = () => {
+  postInput.value['title'] = { text: "", isValid: true };
+  postInput.value['content'] = { text: "", isValid: true };
+  hasAlert.value = false;
+}
+
+const createNewPost = () => {
+  let isValidTitle = validateInput('title');
+  let isValidContent = validateInput('content');
+  if (isValidTitle && isValidContent) {
+    hasAlert.value = false;
+    console.log(`title: ${postInput.value['title'].text}, content: ${postInput.value['content'].text}`);
+    // useMutation
+  } else {
+    hasAlert.value = true;
+  }
+}
+
+const submitPostInput = (event: SubmitEvent) => {
+  switch (event.submitter.id) {
+    case 'clear':
+      clearPostInput();
+      break;
+    case 'create':
+      createNewPost();
+      break;
+    default:
+      () => console.log('invalid event');
+      break;
+  }
+}
+
 </script>
 
 <template>
@@ -29,16 +81,15 @@ const { result, loading, error } = usePosts();
           </tbody>
         </table>
       </div>
-
     </div>
-    <div class="flex sm:py-2.5 justify-center">
-      <div class="join">
-        <button class="join-item btn xs:btn-xs btn-active">1</button>
-        <button class="join-item btn xs:btn-xs">2</button>
-        <button class="join-item btn xs:btn-xs">3</button>
-        <button class="join-item btn xs:btn-xs">4</button>
-      </div>
-    </div>
+<!--    <div class="flex sm:py-2.5 justify-center">-->
+<!--      <div class="join">-->
+<!--        <button class="join-item btn xs:btn-xs btn-active">1</button>-->
+<!--        <button class="join-item btn xs:btn-xs">2</button>-->
+<!--        <button class="join-item btn xs:btn-xs">3</button>-->
+<!--        <button class="join-item btn xs:btn-xs">4</button>-->
+<!--      </div>-->
+<!--    </div>-->
     <div class="flex justify-end bottom-14 w-full">
       <button class="text-indigo-700" onclick="post_form.showModal()">
         <font-awesome-icon :icon="['fas', 'circle-plus']" size="3x" />
@@ -52,31 +103,42 @@ const { result, loading, error } = usePosts();
             <font-awesome-icon :icon="['fas', 'circle-xmark']" size="xl"/>
           </button>
         </form>
-        <form class="mt-4 p-4">
+        <form class="mt-4 p-4" @submit.prevent="submitPostInput($event)">
           <label class="form-control">
             <div class="label">
               <span class="label-text">Title</span>
+              <span class="label-text-alt">max 50 characters</span>
             </div>
             <input
                 type="text"
                 class="input input-bordered"
                 placeholder="Awesome title"
                 minlength="1"
-                maxlength="20" />
+                maxlength="50"
+                v-model.trim="postInput['title'].text" />
+            <div v-if="hasAlert && !postInput['title'].isValid" class="label-text text-red-900">
+              Title must not be-empty.
+            </div>
           </label>
           <label class="form-control">
             <div class="label">
-              <span class="label-text">Content (max 1000 characters)</span>
+              <span class="label-text">Content</span>
+              <span class="label-text-alt">max 1000 characters</span>
             </div>
             <textarea
                 class="textarea textarea-bordered h-24"
                 placeholder="Write something awesome"
                 minlength="1"
-                maxlength="1000"></textarea>
+                maxlength="1000"
+                v-model.trim="postInput['content'].text"
+            ></textarea>
+            <div v-if="hasAlert && !postInput['content'].isValid" class="label-text text-red-900">
+              Content must not be-empty.
+            </div>
           </label>
           <div class="modal-action">
-            <button class="btn btn-accent btn-outline btn-xs sm:btn-sm">Cancel</button>
-            <button class="btn btn-secondary btn-outline btn-xs sm:btn-sm">Create</button>
+            <button id="clear" class="btn btn-accent btn-outline btn-xs sm:btn-sm">Clear</button>
+            <button id="create" class="btn btn-secondary btn-outline btn-xs sm:btn-sm">Create</button>
           </div>
         </form>
       </div>
