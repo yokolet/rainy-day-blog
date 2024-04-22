@@ -16,4 +16,5 @@ Rails.application.routes.draw do
 
   # Routes to be handled by Vue Router
   get '/posts', to: redirect('/')
+  get '/post/:id', to: redirect('/')
 end

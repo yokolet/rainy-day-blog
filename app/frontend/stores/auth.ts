@@ -1,11 +1,11 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { useCookies } from '@vueuse/integrations/useCookies'
+import { useToken } from '../composables/useToken'
 
 export interface UserInfo {
   identifier: string
   provider: string
-  jwt: string
 }
 
 export interface PKCEParams {
@@ -19,22 +19,24 @@ export interface PKCEParams {
 }
 
 const cookies = useCookies()
+const { getJWT, saveJWT, removeJWT } = useToken();
 
 export const useAuthStore = defineStore('auth', () => {
-  const jwt = ref<string|null>(null)
   const expiry = ref<Date|null>(null)
   const identifier = ref<string|null>(null)
   const provider = ref<string|null>(null)
 
   const isAuthenticated = (): boolean => {
-    return identifier.value !== null && provider.value !== null && jwt.value !== null
+    return identifier.value !== null
+      && provider.value !== null
+      && getJWT() !== null
     //let now: number = new Date().getTime()
     //return jwt.value !== null && expiry.value !== null && (now < expiry.value.getTime())
     //return true
   }
 
   const getUserInfo = (): UserInfo => {
-    return { identifier: identifier.value, provider: provider.value, jwt: jwt.value }
+    return { identifier: identifier.value, provider: provider.value }
   }
 
   const getPKCEParams = async (provider: string) => {
@@ -58,18 +60,17 @@ export const useAuthStore = defineStore('auth', () => {
     console.log(cookies.get('user_info'))
     identifier.value = userInfo['identifier']
     provider.value = userInfo['provider']
-    jwt.value = userInfo['jwt']
+    saveJWT(userInfo['jwt'])
   }
 
   const logout = () => {
     cookies.remove('user_info')
     identifier.value = null
     provider.value = null
-    jwt.value = null
+    removeJWT()
   }
 
   return {
-    jwt,
     expiry,
     identifier,
     provider,

@@ -5,12 +5,17 @@
     "preview": "bunx --bun vite preview"
   },
   "dependencies": {
+    "@apollo/client": "^3.9.10",
     "@fortawesome/fontawesome-svg-core": "^6.5.1",
     "@fortawesome/free-brands-svg-icons": "^6.5.1",
     "@fortawesome/free-regular-svg-icons": "^6.5.1",
     "@fortawesome/free-solid-svg-icons": "^6.5.1",
     "@fortawesome/vue-fontawesome": "^3.0.6",
+    "@vue/apollo-composable": "^4.0.2",
+    "@vueuse/core": "^10.9.0",
     "@vueuse/integrations": "^10.9.0",
+    "graphql": "^16.8.1",
+    "graphql-tag": "^2.12.6",
     "pinia": "^2.1.7",
     "universal-cookie": "^7.1.0",
     "vue": "^3.4.21",
