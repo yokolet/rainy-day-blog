@@ -4,8 +4,12 @@ import { ref } from 'vue';
 import { PostInputType } from '../types/formInputTypes';
 import { useEscapeHtml } from '../composables/useEscapeHtml';
 import { usePostCreate } from '../composables/usePostCreate';
+import { useAuthStore } from '../stores/auth';
+import { useRouter } from 'vue-router';
 
+const store = useAuthStore();
 const { result, loading, error } = usePosts();
+const router = useRouter();
 
 const postInput = ref<PostInputType>({
   title: {
@@ -19,6 +23,13 @@ const postInput = ref<PostInputType>({
 });
 
 const postCreateError = ref<string|null>(null);
+
+const hasAlert = ref<boolean>(false);
+const alertMessage = ref<string>('Something went wrong.');
+const resetAlert = () => {
+  hasAlert.value = false;
+  router.push('/');
+}
 
 const validateInput = (key: string): boolean => {
   postInput.value[key].isValid = postInput.value[key].text.length > 0;
@@ -34,14 +45,20 @@ const createNewPost = () => {
   let isValidTitle = validateInput('title');
   let isValidContent = validateInput('content');
   if (isValidTitle && isValidContent) {
-    const { postCreate, onError } = usePostCreate();
-    postCreate({
-      title: useEscapeHtml(postInput.value['title'].text),
-      content: useEscapeHtml(postInput.value['content'].text)
+    const { postCreate, onDone, onError } = usePostCreate(
+        useEscapeHtml(postInput.value['title'].text),
+        useEscapeHtml(postInput.value['content'].text)
+    );
+    postCreate();
+    onDone(createResult => {
+      hasAlert.value = true;
+      alertMessage.value = 'Success.';
     });
-    onError(error => {
-      postCreateError.value = error.message;
+    onError( createError => {
+      postCreateError.value = createError.message;
       console.log(`post create error: ${postCreateError.value}`);
+      hasAlert.value = true;
+      alertMessage.value = 'Log in again. Log out first if it needs.';
     });
   }
 }
@@ -97,7 +114,7 @@ const submitPostInput = (event: Event) => {
 <!--      </div>-->
 <!--    </div>-->
     <div class="flex justify-end bottom-14 w-full">
-      <button class="text-indigo-700" onclick="post_form.showModal()">
+      <button v-if="store.isAuthenticated()" class="text-indigo-700" onclick="post_form.showModal()">
         <font-awesome-icon :icon="['fas', 'circle-plus']" size="3x" />
       </button>
     </div>
@@ -142,7 +159,14 @@ const submitPostInput = (event: Event) => {
               Content must not be-empty.
             </div>
           </label>
-          <div class="modal-action">
+          <div v-if="hasAlert" role="alert" class="alert mt-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-info shrink-0 w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <span>{{ alertMessage }}</span>
+            <div>
+              <button class="btn btn-sm btn-primary" onclick="post_form.close()" @click="resetAlert">OK</button>
+            </div>
+          </div>
+          <div v-else class="modal-action">
             <button id="clear" class="btn btn-accent btn-outline btn-xs sm:btn-sm">Clear</button>
             <button id="create" class="btn btn-secondary btn-outline btn-xs sm:btn-sm">Create</button>
           </div>
