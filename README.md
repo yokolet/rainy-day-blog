@@ -1,5 +1,7 @@
 # Rainy Day Blog
 
+### Repository: [https://gitlab.com/yokolet/rainy-day-blog](https://gitlab.com/yokolet/rainy-day-blog)
+
 <img src="./docs/pink-cherry-blossom-in-rain.jpeg" height="200">
 
 Rainy Day Blog is a sample Rails app to showcase how to create a blog.
